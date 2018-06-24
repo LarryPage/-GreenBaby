@@ -1,0 +1,95 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.psp.greenbaby"
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 1//INT类型的，第一个版本定义为1，以后递增,用于版本升级所用,不显示给用户
+        versionName "1.0"//版本号,字符串，显示给用户
+        flavorDimensions "versionCode"//flavor dimension 维度是该版本号，这样维度都是统一的
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    //签名
+    signingConfigs {
+        release {
+            storeFile file("../keystore/test.keystore")
+            storePassword "test123456"
+            keyAlias "test"
+            keyPassword "test123456"
+        }
+        debug {
+            storeFile file("../keystore/test.keystore")
+            storePassword "test123456"
+            keyAlias "test"
+            keyPassword "test123456"
+        }
+
+    }
+
+    productFlavors {
+        product {
+            manifestPlaceholders = [BAIDU_CHANNEL_VALUE: "greenbaby"]
+        }
+//        xiaomi {
+//            manifestPlaceholders = [BAIDU_CHANNEL_VALUE: "xiaomi"]
+//        }
+//        360market {
+//            manifestPlaceholders = [BAIDU_CHANNEL_VALUE: "360market"]
+//        }
+//        baidu {
+//            manifestPlaceholders = [BAIDU_CHANNEL_VALUE: "baidu"]
+//        }
+//        wandoujia {
+//            manifestPlaceholders = [BAIDU_CHANNEL_VALUE: "wandoujia"]
+//        }
+    }
+
+    buildTypes {
+        release {
+            //混淆开关
+            minifyEnabled true
+            //混淆配置
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // 减少不必要的资源文件
+            shrinkResources true
+            //ZipAlign优化
+            zipAlignEnabled true
+            //是否保留调试信息
+            debuggable false
+            //是否打开jniDebuggable开关
+            //jniDebuggable false
+            //签名配置
+            signingConfig signingConfigs.release
+            //versionNameSuffix  "_alpha"
+        }
+        debug {
+            //混淆开关
+            minifyEnabled false
+            //混淆配置
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // 减少不必要的资源文件
+            shrinkResources false
+            //ZipAlign优化
+            zipAlignEnabled true
+            //是否保留调试信息
+            debuggable true
+            //是否打开jniDebuggable开关
+            //jniDebuggable false
+            //签名配置
+            signingConfig signingConfigs.debug
+            versionNameSuffix  "_dev"
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
